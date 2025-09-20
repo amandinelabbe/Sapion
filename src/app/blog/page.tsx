@@ -10,11 +10,38 @@ export default function Blog() {
     {
       id: 1,
       title: 'SAP S/4HANA Cloud 2024 : Les nouvelles fonctionnalités',
-      excerpt: 'Découvrez les dernières innovations de SAP S/4HANA Cloud 2024.',
+      excerpt: 'Découvrez les dernières innovations de SAP S/4HANA Cloud 2024 qui révolutionnent la gestion d\'entreprise.',
       category: 'Innovation',
-      date: '2024-03-15',
+      date: '2025-09-20',
       readTime: '5 min',
-      author: 'Marie Dubois'
+      author: 'Quentin Leroux'
+    },
+    {
+      id: 2,
+      title: 'Migration vers le Cloud : Guide complet pour les PME',
+      excerpt: 'Les étapes essentielles pour réussir votre migration SAP vers le cloud en minimisant les risques et les coûts.',
+      category: 'Migration',
+      date: '2025-09-10',
+      readTime: '8 min',
+      author: 'Quentin Leroux'
+    },
+    {
+      id: 3,
+      title: 'Intelligence Artificielle et SAP : L\'avenir de l\'ERP',
+      excerpt: 'Comment l\'IA transforme les processus métier avec SAP et améliore la prise de décision en temps réel.',
+      category: 'Intelligence Artificielle',
+      date: '2025-09-05',
+      readTime: '6 min',
+      author: 'Amandine Labbe'
+    },
+    {
+      id: 4,
+      title: 'Création de SAPION',
+      excerpt: 'Découvrez SAPION, vos experts SAP pour optimiser et implémenter des solutions innovantes.',
+      category: 'Entreprise',
+      date: '2025-09-01',
+      readTime: '6 min',
+      author: 'Quentin Leroux'
     }
   ];
 
@@ -44,33 +71,50 @@ export default function Blog() {
           </p>
         </motion.div>
 
-        <div className="glass rounded-3xl p-8">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            {articles[0].title}
-          </h2>
-          <div className="flex items-center space-x-4 text-sm text-gray-400 mb-4">
-            <span className="bg-primary/20 text-primary px-2 py-1 rounded-md">
-              {articles[0].category}
-            </span>
-            <div className="flex items-center space-x-1">
-              <Calendar className="w-4 h-4" />
-              <span>{formatDate(articles[0].date)}</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Clock className="w-4 h-4" />
-              <span>{articles[0].readTime}</span>
-            </div>
-          </div>
-          <p className="text-gray-300 leading-relaxed mb-4">
-            {articles[0].excerpt}
-          </p>
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-400">{t('blog.by')} {articles[0].author}</span>
-            <div className="flex items-center text-accent font-medium">
-              <span>{t('blog.readMore')}</span>
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {articles.map((article, index) => (
+            <motion.div
+              key={article.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="glass rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 group cursor-pointer"
+            >
+              <div className="mb-4">
+                <span className="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-medium">
+                  {article.category}
+                </span>
+              </div>
+              
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-accent transition-colors duration-300 line-clamp-2">
+                {article.title}
+              </h3>
+              
+              <p className="text-gray-300 leading-relaxed mb-4 text-sm line-clamp-3">
+                {article.excerpt}
+              </p>
+              
+              <div className="flex items-center space-x-4 text-xs text-gray-400 mb-4">
+                <div className="flex items-center space-x-1">
+                  <Calendar className="w-3 h-3" />
+                  <span>{formatDate(article.date)}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Clock className="w-3 h-3" />
+                  <span>{article.readTime}</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                <span className="text-xs text-gray-400">{t('blog.by')} {article.author}</span>
+                <div className="flex items-center text-accent font-medium text-sm group-hover:translate-x-1 transition-transform duration-300">
+                  <span>{t('blog.readMore')}</span>
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </div>

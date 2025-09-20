@@ -3,9 +3,40 @@
 import { motion } from 'framer-motion';
 import { Cloud, Cog, Shield, TrendingUp, ArrowRight, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
+import { useState, useEffect } from 'react';
 
 export default function Services() {
   const { t, tArray } = useLanguage();
+  const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Détecter si on est sur mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Fonction pour gérer le clic sur les cartes
+  const handleCardClick = (cardId: number) => {
+    if (isMobile) {
+      setFlippedCards(prev => {
+        const newSet = new Set(prev);
+        if (newSet.has(cardId)) {
+          newSet.delete(cardId);
+        } else {
+          newSet.add(cardId);
+        }
+        return newSet;
+      });
+    }
+  };
+
   const services = [
     {
       id: 1,
@@ -53,9 +84,9 @@ export default function Services() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-32"
+          className="text-center mb-20"
         >
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
             {t('services.title')}
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
@@ -65,62 +96,71 @@ export default function Services() {
 <br />
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="group perspective-1000 "
-            >
-              <div className="relative h-80 transform-style-preserve-3d group-hover:rotate-y-180 transition-transform duration-700">
-                {/* Front Face */}
-                <div className="absolute inset-0 backface-hidden">
-                  <div className="glass p-10 rounded-2xl h-full flex flex-col justify-center items-center text-center space-y-4 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300">
-                    <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                      <service.icon className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-accent transition-colors duration-300">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-400 leading-relaxed text-sm">
-                      {service.shortDesc}
-                    </p>
-                    <div className="flex items-center text-accent font-medium group-hover:translate-x-2 transition-transform duration-300 text-sm">
-                      <span>Découvrir plus</span>
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Back Face */}
-                <div className="absolute inset-0 backface-hidden rotate-y-180">
-                  <div className="glass p-12 rounded-2xl h-full flex flex-col justify-center items-center text-center">
-                    <div className="space-y-6">
-                      <h4 className="text-xl font-bold text-white mb-4">
-                        {service.title}
-                      </h4>
-                      <p className="text-gray-300 text-sm leading-relaxed mb-6">
-                        {service.fullDesc}
-                      </p>
-                      <div className="space-y-3 mb-6">
-                        {service.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-center justify-center space-x-3">
-                            <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
-                            <span className="text-gray-300 text-sm">{feature}</span>
-                          </div>
-                        ))}
+          {services.map((service, index) => {
+            const isFlipped = flippedCards.has(service.id);
+            return (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: true }}
+                className="group perspective-1000"
+                onClick={() => handleCardClick(service.id)}
+                style={{ cursor: isMobile ? 'pointer' : 'default' }}
+              >
+                <div className={`relative h-80 transform-style-preserve-3d transition-transform duration-700 ${
+                  isMobile 
+                    ? (isFlipped ? 'rotate-y-180' : '') 
+                    : 'group-hover:rotate-y-180'
+                }`}>
+                  {/* Front Face */}
+                  <div className="absolute inset-0 backface-hidden">
+                    <div className="glass p-10 rounded-2xl h-full flex flex-col justify-center items-center text-center space-y-4 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300">
+                      <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                        <service.icon className="w-8 h-8 text-white" />
                       </div>
-                      <button className={`bg-gradient-to-r ${service.color} px-6 py-3 rounded-lg text-white font-medium hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm`}>
-                        En savoir plus
-                      </button>
+                      <h3 className="text-xl font-bold text-white group-hover:text-accent transition-colors duration-300">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-400 leading-relaxed text-sm">
+                        {service.shortDesc}
+                      </p>
+                      <div className="flex items-center text-accent font-medium group-hover:translate-x-2 transition-transform duration-300 text-sm">
+                        <span>Découvrir plus</span>
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Back Face */}
+                  <div className="absolute inset-0 backface-hidden rotate-y-180">
+                    <div className="glass p-12 rounded-2xl h-full flex flex-col justify-center items-center text-center">
+                      <div className="space-y-6">
+                        <h4 className="text-xl font-bold text-white mb-4">
+                          {service.title}
+                        </h4>
+                        <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                          {service.fullDesc}
+                        </p>
+                        <div className="space-y-3 mb-6">
+                          {service.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-center justify-center space-x-3">
+                              <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
+                              <span className="text-gray-300 text-sm">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <button className={`bg-gradient-to-r ${service.color} px-6 py-3 rounded-lg text-white font-medium hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm`}>
+                          En savoir plus
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* CTA Section */}
