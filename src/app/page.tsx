@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Cloud, Shield, Zap, TrendingUp, Users, Award, Globe, Calendar } from 'lucide-react';
@@ -8,19 +7,6 @@ import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Home() {
   const { t } = useLanguage();
-  const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const fullText = 'Design modern SAP architectures';
-
-  useEffect(() => {
-    if (currentIndex < fullText.length) {
-      const timeout = setTimeout(() => {
-        setDisplayedText(prev => prev + fullText[currentIndex]);
-        setCurrentIndex(prev => prev + 1);
-      }, 100);
-      return () => clearTimeout(timeout);
-    }
-  }, [currentIndex, fullText]);
 
   const features = [
     {
@@ -307,7 +293,7 @@ export default function Home() {
                 </div>
 
                 <blockquote className="text-xl md:text-2xl text-gray-300 italic leading-relaxed border-l-4 border-accent pl-6">
-                  "{t('home.about.ceo.quote')}"
+                  &ldquo;{t('home.about.ceo.quote')}&rdquo;
                 </blockquote>
 
                 <p className="text-gray-400 leading-relaxed">
