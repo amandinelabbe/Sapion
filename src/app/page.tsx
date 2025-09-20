@@ -71,48 +71,14 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                style={{ 
-                  fontSize: '4rem', 
-                  fontWeight: 'bold', 
-                  color: '#ffffff',
-                  textAlign: 'center',
-                  marginBottom: '1rem',
-                  lineHeight: '1.1'
-                }}
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-4 leading-tight"
               >
                 {t('home.title')}
               </motion.h1>
               
-              <div 
-                style={{ 
-                  fontSize: '4rem', 
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  marginBottom: '2rem',
-                  background: 'linear-gradient(135deg, #3b82f6 0%, #10b981 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
-              >
+              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
                 with Sapion Expertise
               </div>
-              
-                  <motion.h1 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                style={{ 
-                  fontSize: '4rem', 
-                  fontWeight: 'bold', 
-                  color: '#ffffff',
-                  textAlign: 'center',
-                  marginBottom: '1rem',
-                  lineHeight: '1.1'
-                }}
-              >
-            
-              </motion.h1>
               
             </div>
 
