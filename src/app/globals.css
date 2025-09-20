@@ -1,26 +1,624 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Base styles - CSS direct pour forcer l'affichage */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Theme Dark (par défaut) */
+body,
+.dark-theme {
+  background: linear-gradient(
+    135deg,
+    #0a1120 0%,
+    #0f1b2e 25%,
+    #142d47 50%,
+    #0f1b2e 75%,
+    #0a1120 100%
+  ) !important;
+  background-size: 400% 400% !important;
+  animation: gradientFlow 20s ease infinite !important;
+  position: relative !important;
+  color: #ffffff !important;
+  font-family: system-ui, sans-serif !important;
+  min-height: 100vh !important;
+  overflow-x: hidden !important;
+}
+
+/* Theme Light */
+.light-theme body,
+html.light-theme {
+  background: linear-gradient(
+    45deg,
+    #ffffff 0%,
+    #e0f2fe 15%,
+    #f0f9ff 30%,
+    #e6fffa 45%,
+    #f0f9ff 60%,
+    #e0f2fe 75%,
+    #ffffff 100%
+  ) !important;
+  background-size: 400% 400% !important;
+  animation: lightGradientFlow 20s ease infinite !important;
+  position: relative !important;
+  color: #1a202c !important;
+  font-family: system-ui, sans-serif !important;
+  min-height: 100vh !important;
+  overflow-x: hidden !important;
+}
+
+/* Particules animées mode sombre */
+body::before,
+.dark-theme::before {
+  content: '' !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 20% 90%, rgba(34, 197, 94, 0.2) 0%, transparent 50%) !important;
+  animation: starFloat 30s ease-in-out infinite !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+/* Particules animées mode clair */
+.light-theme::before {
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.25) 0%, transparent 30%),
+    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.2) 0%, transparent 35%),
+    radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.18) 0%, transparent 30%),
+    radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.3) 0%, transparent 25%),
+    radial-gradient(circle at 20% 90%, rgba(34, 197, 94, 0.25) 0%, transparent 30%),
+    radial-gradient(circle at 60% 25%, rgba(245, 158, 11, 0.15) 0%, transparent 35%),
+    radial-gradient(circle at 25% 60%, rgba(239, 68, 68, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(147, 51, 234, 0.1) 0%, transparent 45%) !important;
+  animation: lightStarFloat 15s ease-in-out infinite !important;
+}
+
+/* Effet d'onde supplémentaire en mode clair */
+.light-theme::after {
+  content: '' !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(
+    45deg,
+    transparent 48%,
+    rgba(59, 130, 246, 0.05) 49%,
+    rgba(59, 130, 246, 0.05) 51%,
+    transparent 52%
+  ) !important;
+  background-size: 60px 60px !important;
+  animation: waveMove 25s linear infinite !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+/* Grille de points subtile avec couleur bleue */
+body::after {
+  content: '' !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-image: radial-gradient(circle, rgba(59, 130, 246, 0.1) 1px, transparent 1px) !important;
+  background-size: 50px 50px !important;
+  animation: gridMove 40s linear infinite !important;
+  pointer-events: none !important;
+  z-index: -2 !important;
+}
+
+/* Forcer les couleurs CSS pour les classes principales - Palette Bleu/Vert */
+.text-white { color: #ffffff !important; }
+.text-accent { color: #10b981 !important; }
+.text-primary { color: #3b82f6 !important; }
+.text-gray-300 { color: #d1d5db !important; }
+.text-gray-400 { color: #9ca3af !important; }
+
+.bg-primary { background-color: #3b82f6 !important; }
+.bg-accent { background-color: #10b981 !important; }
+.bg-secondary { background-color: rgba(15, 27, 46, 0.8) !important; }
+
+.bg-primary { background-color: #2563eb !important; }
+.bg-accent { background-color: #059669 !important; }
+.bg-secondary { background-color: #f1f5f9 !important; }
+
+.container {
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+.glass {
+  background: rgba(15, 27, 46, 0.3) !important;
+  backdrop-filter: blur(20px) !important;
+  border: none !important;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2) !important;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 25px 50px rgba(16, 185, 129, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+.fixed {
+  position: fixed !important;
+}
+
+.top-0 { top: 0 !important; }
+.left-0 { left: 0 !important; }
+.right-0 { right: 0 !important; }
+.z-50 { z-index: 50 !important; }
+
+.flex { display: flex !important; }
+.items-center { align-items: center !important; }
+.justify-between { justify-content: space-between !important; }
+.justify-center { justify-content: center !important; }
+.space-x-3 > :not(:first-child) { margin-left: 0.75rem !important; }
+.space-x-4 > :not(:first-child) { margin-left: 1rem !important; }
+.space-x-8 > :not(:first-child) { margin-left: 2rem !important; }
+
+.h-16 { height: 4rem !important; }
+.w-10 { width: 2.5rem !important; }
+.h-10 { height: 2.5rem !important; }
+
+.rounded-lg { border-radius: 0.5rem !important; }
+.rounded-xl { border-radius: 0.75rem !important; }
+.rounded-2xl { border-radius: 1rem !important; }
+.rounded-3xl { border-radius: 1.5rem !important; }
+.rounded-full { border-radius: 9999px !important; }
+
+.px-3 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+.px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+.px-6 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+.px-8 { padding-left: 2rem !important; padding-right: 2rem !important; }
+.py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+.py-3 { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
+.py-4 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+.py-20 { padding-top: 5rem !important; padding-bottom: 5rem !important; }
+
+.text-2xl { font-size: 1.5rem !important; line-height: 2rem !important; }
+.text-3xl { font-size: 1.875rem !important; line-height: 2.25rem !important; }
+.text-5xl { font-size: 3rem !important; line-height: 1 !important; }
+.text-6xl { font-size: 3.75rem !important; line-height: 1 !important; }
+
+.font-bold { font-weight: 700 !important; }
+.font-semibold { font-weight: 600 !important; }
+
+.mb-6 { margin-bottom: 1.5rem !important; }
+.mb-16 { margin-bottom: 4rem !important; }
+.pt-16 { padding-top: 4rem !important; }
+
+.text-center { text-align: center !important; }
+
+.min-h-screen { min-height: 100vh !important; }
+
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
+
+/* Navigation items */
+.nav-item {
+  position: relative !important;
+  transition: color 0.3s ease !important;
+}
+
+.nav-item::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -4px !important;
+  left: 0 !important;
+  width: 0 !important;
+  height: 2px !important;
+  background: #10b981 !important;
+  transition: width 0.3s ease !important;
+}
+
+.nav-item:hover::after {
+  width: 100% !important;
+}
+
+.nav-item:hover {
+  color: #10b981 !important;
+}
+
+/* Navigation items pour navbar blanche */
+.nav-item-white {
+  position: relative !important;
+  transition: color 0.3s ease !important;
+}
+
+.nav-item-white::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -4px !important;
+  left: 0 !important;
+  width: 0 !important;
+  height: 2px !important;
+  background: #10b981 !important;
+  transition: width 0.3s ease !important;
+}
+
+.nav-item-white:hover::after {
+  width: 100% !important;
+}
+
+.nav-item-white:hover {
+  color: #10b981 !important;
+}
+
+/* Animations */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
+@keyframes starFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-30px) rotate(180deg) scale(1.1);
+    opacity: 0.4;
+  }
+}
+
+@keyframes gridMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+/* Nouvelles animations pour le mode clair */
+@keyframes lightGradientFlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@keyframes lightStarFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateY(-15px) rotate(90deg) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-5px) rotate(180deg) scale(1.3);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translateY(-20px) rotate(270deg) scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes waveMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 60px 60px;
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Scrollbar avec couleurs bleu/vert */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 27, 46, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
+  background: linear-gradient(
+    135deg,
+    #000000 0%,
+    #0a0a0a 25%,
+    #1a1a1a 50%,
+    #0a0a0a 75%,
+    #000000 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Animations globales */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 102, 255, 0.2);
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0066ff;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0052cc;
+}
+
+/* Styles pour les éléments de navigation */
+.nav-item {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+  width: 100%;
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(26, 26, 26, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Glass effect mode clair */
+.light-theme .glass {
+  background: rgba(248, 250, 252, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  box-shadow: 
+    0 8px 32px rgba(59, 130, 246, 0.1),
+    0 2px 8px rgba(16, 185, 129, 0.05) !important;
+}
+
+/* Glass effect with extra padding for forms and content sections */
+.glass-form {
+  background: rgba(26, 26, 26, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 4rem !important;
+}
+
+/* Glass effect mode clair pour les formulaires */
+.light-theme .glass-form {
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(15px) !important;
+  border: 1px solid rgba(59, 130, 246, 0.25) !important;
+  padding: 4rem !important;
+  box-shadow: 
+    0 12px 40px rgba(59, 130, 246, 0.12),
+    0 4px 16px rgba(16, 185, 129, 0.08) !important;
+}
+
+/* Couleurs de texte en mode clair */
+.light-theme h1,
+.light-theme h2,
+.light-theme h3,
+.light-theme h4,
+.light-theme h5,
+.light-theme h6 {
+  color: #1a202c !important;
+}
+
+.light-theme .text-white {
+  color: #1a202c !important;
+}
+
+.light-theme .text-gray-300 {
+  color: #4a5568 !important;
+}
+
+.light-theme .text-gray-400 {
+  color: #2d3748 !important;
+}
+
+.light-theme .text-gray-500 {
+  color: #2d3748 !important;
+}
+
+.light-theme .text-blue-400,
+.light-theme .text-accent {
+  color: #2563eb !important;
+}
+
+/* Navigation en mode clair */
+.light-theme .nav-item-white {
+  color: #1a202c !important;
+}
+
+.light-theme .nav-item-white:hover {
+  color: #2563eb !important;
+}
+
+/* Footer en mode clair */
+.light-theme footer {
+  border-top: 1px solid rgba(59, 130, 246, 0.2) !important;
+}
+
+.light-theme footer .text-gray-400 {
+  color: #475569 !important;
+}
+
+.light-theme footer .text-white {
+  color: #1e293b !important;
+}
+
+.light-theme footer .bg-secondary\/50 {
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+.light-theme footer .bg-secondary\/50:hover {
+  background: rgba(59, 130, 246, 0.2) !important;
+  transform: scale(1.05);
+}
+
+/* Boutons et liens en mode clair */
+.light-theme button .text-white {
+  color: #1a202c !important;
+}
+
+.light-theme a.text-white {
+  color: #1a202c !important;
+}
+
+.light-theme .hover\:text-accent:hover {
+  color: #2563eb !important;
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
+}
+
+/* Animation pour le titre mécanique */
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid var(--accent);
+  white-space: nowrap;
+  animation: typewriter 3s steps(40) 1s forwards, blink 0.5s step-end infinite;
 }
